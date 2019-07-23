@@ -40,14 +40,12 @@ cmsAdminWebServer
 
 2. Start CMS system 
 
-Open 5 terminal tab:
+Open some terminal tab:
 ```
 source /usr/local/lib/cms/bin/activate
 cmsLogService               #in terminal 1
 cmsRankingWebServer         #in terminal 2
 cmsResourceService -a       #in terminal 3
-cmsScoringService           #in terminal 4
-cmsContestWebServer         #in terminal 5
 ```
 
 3. Access CMS
