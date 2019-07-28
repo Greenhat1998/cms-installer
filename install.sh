@@ -9,7 +9,7 @@ case "$1" in
         iso-codes shared-mime-info stl-manual cgroup-lite libcap-dev \
         python-dev libpq-dev libcups2-dev libyaml-dev \
         libffi-dev python-pip virtualenv
-    ;; 
+    ;;
     aptoptional)
         sudo apt-get install nginx-full php7.0-cli php7.0-fpm \
         phppgadmin texlive-latex-base a2ps gcj-jdk haskell-platform
@@ -21,10 +21,7 @@ case "$1" in
             wget -O "$ARCHIVE" "$LINK"
         ) &&
         tar xf "$ARCHIVE"
-    ;;
-    unwget)
-        rm -rf cms/ "$ARCHIVE"
-    ;;
+    ;;    
     prerequisites)
         (
             cd cms/ &&
@@ -34,13 +31,7 @@ case "$1" in
                 echo "Please logout and login again"
             )
         )
-    ;;
-    unprerequisites)
-        (
-            cd cms/ &&
-            yes | sudo ./prerequisites.py uninstall
-        )
-    ;;
+    ;;   
     virtualenv)
         (
             sudo apt install virtualenv
@@ -49,14 +40,8 @@ case "$1" in
             virtualenv -p python2 /usr/local/lib/cms/
         )
     ;;
-    unvirtualenv)
-        sudo rm -rf /usr/local/lib/cms/
-    ;;
     patch)
         sed -i -e 's/bcrypt==2.0/bcrypt==3.1/g' cms/requirements.txt
-    ;;
-    unpatch)
-        sed -i -e 's/bcrypt==3.1/bcrypt==2.0/g' cms/requirements.txt
     ;;
     setup)
         (
@@ -67,13 +52,6 @@ case "$1" in
             deactivate
         )
     ;;
-    unsetup)
-        (
-            source /usr/local/lib/cms/bin/activate &&
-            yes | pip uninstall cms &&
-            deactivate
-        )
-    ;;
     postgres)
         (
             sudo su --login postgres -c "createuser --username=postgres --pwprompt cmsuser" <<< $'your_password_here\nyour_password_here'
@@ -81,10 +59,6 @@ case "$1" in
             sudo su --login postgres -c "psql --username=postgres --dbname=cmsdb --command='ALTER SCHEMA public OWNER TO cmsuser'"
             sudo su --login postgres -c "psql --username=postgres --dbname=cmsdb --command='GRANT SELECT ON pg_largeobject TO cmsuser'"
         )
-    ;;
-    unpostgres)
-        sudo su --login postgres -c "dropdb cmsdb"
-        sudo su --login postgres -c "dropuser cmsuser"
     ;;
     install)
         ./install.sh apt &&
@@ -104,21 +78,6 @@ case "$1" in
         )
         echo "Installed successfully"
     ;;
-    uninstall)
-        ./install.sh unpostgres &&
-        ./install.sh unsetup &&
-        ./install.sh unvirtualenv &&
-        ./install.sh unprerequisites &&
-        ./install.sh unwget &&
-        echo "Uninstalled successfully"
-    ;;
-    help)
-        echo "A script to install CMS 1.3.2 quickly"
-        echo ""
-        echo "Install: ./install.sh install"
-        echo "Uninstall: ./install.sh uninstall"
-    ;;
     *)
-        echo "Invalid command, please type ./install help"
     ;;
 esac
