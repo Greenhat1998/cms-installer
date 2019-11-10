@@ -1,18 +1,19 @@
 cd "$(dirname "$0")"
-LINK="https://github.com/cms-dev/cms/releases/download/v1.3.2/v1.3.2.tar.gz"
-ARCHIVE="v1.3.2.tar.gz"
+LINK="https://github.com/cms-dev/cms/releases/download/v1.4.rc1/v1.4.rc1.tar.gz"
+ARCHIVE="v1.4.rc1.tar.gz"
 WARNING="Run ./install.sh patch if you are using Ubuntu 18.04 or higher"
 case "$1" in
     apt)
-        sudo apt install build-essential openjdk-8-jre openjdk-8-jdk \
-        fpc postgresql postgresql-client gettext python2.7 \
-        iso-codes shared-mime-info stl-manual cgroup-lite libcap-dev \
-        python-dev libpq-dev libcups2-dev libyaml-dev \
-        libffi-dev python-pip virtualenv
+        sudo apt install build-essential openjdk-8-jdk-headless fp-compiler \
+        postgresql postgresql-client gettext python3.6 cppreference-doc-en-html \
+        iso-codes shared-mime-info stl-manual cgroup-lite libcap-dev zip \
+        python3.6-dev libpq-dev libcups2-dev libyaml-dev \
+        libffi-dev python3-pip
     ;;
     aptoptional)
-        sudo apt-get install nginx-full php7.0-cli php7.0-fpm \
-        phppgadmin texlive-latex-base a2ps gcj-jdk haskell-platform
+        sudo apt install nginx-full php7.2-cli php7.2-fpm \
+        phppgadmin texlive-latex-base a2ps gcj-jdk haskell-platform rustc \
+        mono-mcs
     ;;
     wget)
         (
@@ -25,7 +26,7 @@ case "$1" in
     prerequisites)
         (
             cd cms/ &&
-            yes | sudo ./prerequisites.py install &&
+            yes | sudo python3 prerequisites.py install &&
             (
                 groups | grep cmsuser ||
                 echo "Please logout and login again"
@@ -37,7 +38,7 @@ case "$1" in
             sudo apt install virtualenv
             sudo mkdir /usr/local/lib/cms/
             sudo chown `whoami`:`whoami` /usr/local/lib/cms/
-            virtualenv -p python2 /usr/local/lib/cms/
+            virtualenv -p python3 /usr/local/lib/cms/
         )
     ;;
     patch)
@@ -47,8 +48,8 @@ case "$1" in
         (
             cd cms/ &&
             source /usr/local/lib/cms/bin/activate &&
-            pip install -r requirements.txt &&
-            python setup.py install &&
+            pip3 install -r requirements.txt &&
+            python3 setup.py install &&
             deactivate
         )
     ;;
@@ -81,4 +82,4 @@ case "$1" in
     *)
     ;;
 esac
-© 2019 GitHub, Inc.
+
