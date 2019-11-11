@@ -62,17 +62,17 @@ case "$1" in
         )
     ;;
     install)
-        ./install.sh apt &&
-        ./install.sh wget &&
+        ./install_new.sh apt &&
+        ./install_new.sh wget &&
         (
             lsb_release -a | grep "18.04" &&
-            ./install.sh patch ||
+            ./install_new.sh patch ||
             echo "$WARNING"
         ) &&
-        ./install.sh prerequisites &&
-        ./install.sh virtualenv &&
-        ./install.sh setup &&
-        ./install.sh postgres &&
+        ./install_new.sh prerequisites &&
+        ./install_new.sh virtualenv &&
+        ./install_new.sh setup &&
+        ./install_new.sh postgres &&
         (
             groups | grep cmsuser ||
             echo "Please logout and login again"
@@ -82,4 +82,3 @@ case "$1" in
     *)
     ;;
 esac
-
